@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=1.0">
+    <title>TitleMap</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .mapDiv {
+            width: 100vw;
+            heigth: 30vh;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+    hello
+    <div id="map" style="width:100%;height:350px;"></div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=68df68d17ad606fd0dc01ab25eb11855"></script>
+    <script>
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(37.563279, 126.985043), // 지도의 중심좌표
+                level: 3 // 지도의 확대 레벨
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        (function() {
+            var geolocation = navigator.geolocation;
+            console.log("---------");
+            console.log(geolocation);
+            geolocation.getCurrentPosition(showLocation, errorHandler);
+        })()
+        function showLocation(position){
+            console.log("position",position);
+            var coords = position.coords;
+            console.log(coords);
+            var currentCenter = new kakao.maps.LatLng(coords.latitude, coords.longitude);
+            map.panTo(currentCenter);
+
+        }
+
+        function errorHandler(e){
+            console.log("error",e);
+
+        }
+
+        $(document).ready(function () {
+            function setInfo(marker) {
+                //마커에 이벤트 추가
+                // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
+                var iwContent = '<div style="padding:5px;">'+arr[i].title+'</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+                // 인포윈도우를 생성합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                    content : iwContent
+                });
+
+                // 마커에 마우스오버 이벤트를 등록합니다
+                kakao.maps.event.addListener(marker, 'mouseover', function() {
+                    // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+                    infowindow.open(map, marker);
+                });
+
+                // 마커에 마우스아웃 이벤트를 등록합니다
+                kakao.maps.event.addListener(marker, 'mouseout', function() {
+                    // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+                    infowindow.close();
+                });
+            }
+
+            var arr = [
+                {title: '모모스테이크', latitude:37.569406 , longitude:126.987345},
+                {title : '종로분식', latitude : 37.570853, longitude : 126.984106},
+                {title : '서브웨이', latitude : 37.570746, longitude : 126.985990},
+                {title : '다락', latitude : 37.573642, longitude : 126.986140}
+            ];
+            for(var i = 0 ; i < arr.length ; i++){
+                //마커 추가
+                var position = new kakao.maps.LatLng(arr[i].latitude, arr[i].longitude);
+
+                var marker = new kakao.maps.Marker({
+                    position: position
+                });
+                marker.setMap(map);
+                //마커 이벤트
+                setInfo(marker);
+            } // end for
+            // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+            kakao.maps.event.addListener(map, 'dragend', function() {
+
+                // 지도 중심좌표를 얻어옵니다
+                var latlng = map.getCenter();
+
+                var message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
+                message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+                console.log(message);
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    *{
+        transition-duration: 1s;
+    }
+    .wrapper{
+        background-color: coral;
+        width: 100vw;
+        height: 50vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+    }
+    .inner{
+        background-color: indianred;
+        width: 20vw;
+        height: 10vh;
+
+    }
+    @media screen and (max-width: 768px) {
+        .wrapper { background-color: lightgreen; }
+    }
+
+
+</style>
+    <div class="wrapper">
+        <div class="inner">
+            <h1>Inner1</h1>
+        </div>
+        <div class="inner">
+            <h1>Inner2</h1>
+        </div>
+        <div class="inner">
+            <h1>Inner3</h1>
+        </div>
+        <div class="inner">
+            <h1>Inner4</h1>
+        </div>
+        <div class="inner">
+            <h1>Inner5</h1>
+        </div>
+        <div class="inner">
+            <h1>Inner6</h1>
+        </div>
+        <div class="inner">
+            <h1>Inner7</h1>
+        </div>
+    </div>
+</body>
+</html>
