@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<style>
+
+	.dis1{
+		display : none;
+	}
+	
+	.dis2{
+		display : none;			
+	}
+	
+	.dis3{
+		display : none;	
+	}
+	
+</style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<script>
+	window.onload = function(){
+		
+		function CreateTree(id){
+			
+			this.name;		// name 변수 생성
+			this.href;		// href 변수 생성
+			this.target;	// target 변수 생성
+			this.icon;		// icon 변수 생성
+			this.child;		// child 변수 생성
+
+		}
+		
+		
+		CreateTree.prototype.data_init = function(data) {
+			
+			this.name = data.name;		// name 변수에 data객체의 name프로퍼티 값 대입
+			this.href = data.href;		// href 변수에 data객체의 href프로퍼티 값 대입
+			this.target = data.target;	// target 변수에 data객체의 target프로퍼티 값 대입
+			this.icon = data.icon;		// icon 변수에 data객체의 icon프로퍼티 값 대입
+			this.child = data.child;	// child 변수에 data객체의 child프로퍼티 값 대입
+
+
+		};
+		
+		CreateTree.prototype.createView = function() {
+			
+			var bool1 = false;	//	자식메뉴를 숨기고 보이기 위한 Boolean 변수
+			var bool2 = false;	//	자식메뉴를 숨기고 보이기 위한 Boolean 변수
+			var bool3 = false;	//	자식메뉴를 숨기고 보이기 위한 Boolean 변수
+			
+			
+			var body = document.getElementsByTagName('div')[0];
+			
+			for(var i =0; i< this.child.length; i++){	// 메뉴들을 body안에 삽입하는 반복문
+				
+				var menu = document.createElement('p');	// p태그 생성
+				menu.setAttribute('id', 'dis'+(i+1));	// 각각의 p태그 속성에 id 추가
+				
+				var img = document.createElement('img');	// img태그 생성
+				img.setAttribute('src', 'menu02.gif');		// img태그 속성에 이미지 파일 경로 추가
+				img.setAttribute('id', 'img'+(i+1));		// 각각의 img태그 속성에 id 추가
+				menu.appendChild(img);		// p태그에 img태그 삽입
+				
+				
+				// 메뉴 이름의 텍스트노드 생성
+				var text = document.createTextNode(this.child[i].name);
+				menu.appendChild(text);	// p태그에 텍스트노드 삽입
+				body.appendChild(menu);	// body안에 p태그 삽입
+				
+				
+				for(var j =0 ; j<this.child[i].child.length; j++){	// 자손 메뉴들을 자식안에 삽입하는 반복문
+					
+					var tname = document.createElement("a");		// a태그 생성
+					var brtag = document.createElement('br');		// 공백태그 생성
+					var childimg = document.createElement("img");	// img태그 생성
+					
+					childimg.setAttribute('src', 'menu01.gif');		// img태그 속성에 이미지 파일 경로 추가
+					
+					tname.appendChild(childimg);	// a태그에 img태그 삽입
+					
+					
+					// 메뉴 이름의 텍스트노드 생성
+					var child = document.createTextNode(' '+this.child[i].child[j].name);
+					tname.appendChild(child);	// a태그에 텍스트노드 삽입
+					
+					// a태그 속성으로 링크경로 추가
+					tname.setAttribute('href', this.child[i].child[j].href);
+					tname.setAttribute('class', 'dis'+[i+1]);	// 자식이 같은 자손들 a태그에 동일한 클래스 이름 추가
+					
+					tname.appendChild(brtag);	// a태그에 공백 삽입
+					menu.appendChild(tname);	// 자식 p태그에 자손 a태그 삽입
+					
+					
+				}
+			}
+			
+			$('#dis1').on("click",  function(){		// 클릭 이벤트 제이쿼리 함수	
+				if(bool1 == false){
+					$('.dis1').css('display','block');		// 메뉴들 보이게 스타일 변경
+					$('#img1').attr('src', 'menu03.gif');	// 이미지 변경
+					bool1 = true;
+				}else if(bool1 == true){
+					$('#img1').attr('src', 'menu02.gif');	// 이미지 변경
+					$('.dis1').css('display','none');		// 메뉴들 안보이게 스타일 변경
+					bool1 = false;
+				}
+			});
+			
+			$('#dis2').on("click",  function(){
+				if(bool2 == false){
+					$('.dis2').css('display','block');
+					$('#img2').attr('src', 'menu03.gif');
+					bool2 = true;
+				}else if(bool2 == true){
+					$('#img2').attr('src', 'menu02.gif');
+					$('.dis2').css('display','none');
+					bool2 = false;
+				}
+			});
+			
+			$('#dis3').on("click",  function(){
+				if(bool3 == false){
+					$('#img3').attr('src', 'menu03.gif');
+					$('.dis3').css('display','block');
+					bool3 = true;
+				}else if(bool3 == true){
+					$('#img3').attr('src', 'menu02.gif');
+					$('.dis3').css('display','none');
+					bool3 = false;
+				}
+			});
+
+			return menu;	// 화면에 출력
+				
+		};		
+		
+	
+		var tree = new CreateTree(document.getElementById('div'));
+		
+		// 메뉴객체 생성
+		// name : a 태그에 나타나는 내용
+		// href : a 태그에 사용될 URL
+		// target: a 태그의 target 속성
+		// icon : 기본 아이콘 대신할 아이콘 URL
+		// child : 자식배열
+		
+		//root객체, root객체는 실제로 보이지 않는다
+		var data = {"name":"name","href":"A링크","target":"target","icon":"","child":[]};
+		
+		//자식개체를 하나 생성
+		var childA = {"name":"관리자메뉴","href":"","target":"","icon":"","child":[]};
+		var childB = {"name":"직원메뉴","href":"","target":"","icon":"","child":[]};
+		var childC = {"name":"관리자메뉴","href":"","target":"","icon":"","child":[]};
+	
+		//자식1를 맨위개체에 붙이기
+		data.child.push(childA); 
+		data.child.push(childB); 
+		data.child.push(childC); 
+		
+		//자식1의 하위개체를 생성
+		var childA1 = {"name":"부하직원조회","href":"http://naver.com","target":"_blank","icon":"","child":[], "class":"dis1"};
+		var childA2 = {"name":"결재승인","href":" http://naver.com","target":"_blank","icon":"","child":[], "class":"dis1"};
+		var childA3 = {"name":"결재내역조회","href":" http://naver.com","target":"_blank","icon":"","child":[], "class":"dis1"};
+	
+		
+		var childB1 = {"name":"결재신청","href":"http://naver.com","target":"_blank","icon":"","child":[], "class":"dis2"};
+		var childB2 = {"name":"급여정보조회","href":" http://naver.com","target":"_blank","icon":"","child":[], "class":"dis2"};
+		var childB3 = {"name":"인사정보조회","href":" http://naver.com","target":"_blank","icon":"","child":[], "class":"dis2"};
+	
+		
+		var childC1 = {"name":"기준관리","href":"http://naver.com","target":"_blank","icon":"","child":[], "class":"dis3"};
+		var childC2 = {"name":"근무현황조회","href":" http://naver.com","target":"_blank","icon":"","child":[], "class":"dis3"};
+		var childC3 = {"name":"평가현황조회","href":" http://naver.com","target":"_blank","icon":"","child":[], "class":"dis3"};
+	
+		//자식1의 하위개체 붙이기
+		childA.child.push(childA1); 
+		childA.child.push(childA2); 
+		childA.child.push(childA3); 
+	
+		childB.child.push(childB1); 
+		childB.child.push(childB2); 
+		childB.child.push(childB3); 
+		
+		childC.child.push(childC1); 
+		childC.child.push(childC2); 
+		childC.child.push(childC3); 
+		
+		//트리에 메뉴객체를 연결
+		tree.data_init(data);
+		//트리메뉴를 화면에 보여준다
+		tree.createView();
+	}
+	</script>
+
+</head>
+<body>
+	<div id='div'></div>
+</body>
+</html>

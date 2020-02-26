@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<style>
+  table {
+    width: 100%;
+    border: 1px solid #333333;
+  }
+  td {
+    padding: 10px;
+    border: 1px solid #333333;
+  }
+  .a {
+    border-collapse: separate;   /* 간격존재 */
+    /*border-collapse: collapse; */  /* 간격제거 */
+  }
+  
+</style>
+
+
+<script>
+	window.onload = function() {
+		
+		function make(tagname, attributes, children){
+			
+			var tname = document.createElement(tagname);	// tagname태그 생성
+			var child = document.createTextNode(children);	// children값이 들어가있는 텍스트노드 생성
+			
+			for(var i in attributes){
+				tname.setAttribute(i, attributes[i]);	// tagname태그 속성에 attributes객체 속성 추가
+			}
+			
+			if(typeof children == 'string'){	// children이 텍스트일 경우
+				tname.appendChild(child);		// tagname에 child텍스트노드 삽입
+			}else if(Array.isArray(children)){	// children이 텍스트가 아니고 배열이 존재할경우
+				for(var j=0; j<children.length; j++)
+					tname.appendChild(children[j]);	// tagname태그에 태그 삽입
+			}else{
+				tname.appendChild(children);	// children이 텍스트가 아니고 배열도 아닌경우 tname에 children태그 삽입
+			}
+			
+			return tname;
+		}
+		
+		var body = document.getElementsByTagName('body')[0];
+
+		var div = make("div", {'style':'background-color:red;', 'id':'div1'}, "hello world");
+		body.appendChild(div);
+
+		var tds = [make("td",{},"Name"), make("td",{},"Type"), make("td",{},"Value")];
+		var tr = make("tr",{}, tds);
+
+		var table = make("table", {'style':'border: 1px solid red;'}, tr);
+		body.appendChild(table);
+	}
+</script>
+</head>
+<body>
+
+</body>
+</html>

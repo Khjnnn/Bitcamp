@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<style>
+	table{width:100%"}
+</style>
+<script>
+
+	function calendar(){	
+		
+		var print = "";	// 화면 출력 변수
+		var month = 3;	// 달력 달 변경 변수
+		var date = new Date(2020, month, 0);	// month변수에 저장된 월의 Date()
+		var datenow = new Date();				// 현재 월의 Date()
+		var yestermonth = new Date(2020, month-1, 0);	// month전달의 Date() // 마지막일의 요일을 알기위해서
+		var day = yestermonth.getDay();			// month전달의 마지막 일자의 요일
+		var count = 0;	// 일 줄바꾸기 위한 변수
+		
+		
+		print += "<table><tr style='height:50px; background:#ffffcc;font-size:30px;font-weight:600; color:#191970'>"
+				+"<td align='center' colspan='7'>2020년"
+				+ month +"월</td></tr><tr style='height:50px; background:#ffeeff;font-size:21px; color:#191970; font-weight:600'>"
+				+"<td align='center'>일</td>	<td align='center'>월</td>"+
+				"<td align='center'>화</td><td align='center'>수</td><td align='center'>목</td><td align='center'>금</td>"+
+				"<td align='center'>토</td></tr><tr>";
+		
+		for(var j = 0; j<=day; j++){	// 전달 마지막 일자 요일까지 공백추가 반복문
+			if(day==6){
+				break;
+			}
+			print += "<td style='width:100px; height:50px; background:#ffefee; font-weight:500'> </td>";
+			count++;	
+		}
+
+		for(var k=0; k<(6-day); k++){	// 첫번째 주 입력 반복문
+			print += "<td style='width:100px; height:50px; background:#ffefee; font-weight:500' align='center'>"+(k+1)+"</td>";
+			count++;
+		}
+		
+		print += "</tr>"	// 첫번째 주 입력 후 줄바꾸기
+		
+		for(var i=k;i<date.getDate();i++){	// 나머지 일자 입력
+			
+			if(count%7 == 0){	// 일요일에 새로운 row 생성
+				print += "<tr>";
+			}
+			
+		
+			// 소스의 month와 현재 월이 같고 && i가 현재 일자와 같으면 빨간색글씨, 현재시간표시
+			if(month == datenow.getMonth()+1 && i == datenow.getDate()-1){
+				print += "<td align='center' style='color:red; width:100px; height:50px; background:#ffefee; font-weight:500'  >"+(i+1)+"<br>"+datenow.toLocaleTimeString()+"</td>"
+			}else{
+				print += "<td align='center' style='width:100px; height:50px; background:#ffefee; font-weight:500'>"+(i+1)+"</td>"
+			}
+		
+			
+			if(count%7 == 6){	// 토요일에 row 닫기
+				print += "</tr>";
+			}
+			
+			count++;
+	
+		}
+		
+		document.write(print);	// 달력 출력
+
+	}
+
+</script>
+
+</head>
+<body onload='calendar()'>
+
+</body>
+</html>
